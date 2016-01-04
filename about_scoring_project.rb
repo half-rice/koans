@@ -30,7 +30,74 @@ require File.expand_path(File.dirname(__FILE__) + '/neo')
 # Your goal is to write the score method.
 
 def score(dice)
-  # You need to write this method
+  # r1,r2,r3,r4,r5 = dice
+  points = Array.new
+  total= 0
+  memory = 0
+  tiar = 1 # three in a row
+  dice.each_with_index do |roll, i|
+    # single score logic
+    if roll == 5
+      points.insert(i, 50)
+    elsif roll == 1
+      points.insert(i, 100)
+    else
+      points.insert(i, 0)
+    end
+
+    # bonus score logic
+    # if roll == memory and tiar < 3
+    #   tiar += 1
+    # end
+    if roll == memory and tiar == 3
+      puts "tiar is equal to 3"
+      if roll == 1
+        points.insert(i, points[i]+700)
+      elsif roll == 5
+        points.insert(i, points[i]+350)
+      else
+        points.insert(i, points[i]+(roll*100))
+      end
+      tiar = 1
+      memory = 0
+    elsif roll == memory and tiar < 3
+      puts "roll == mem and tiar < 3"
+      tiar += 1
+    elsif roll != memory 
+      puts "roll != mem"
+      tiar = 1
+    end
+    memory = roll
+    puts memory
+
+    # if roll == memory and tiar < 3 do
+    #   tiar += 1
+    # end
+
+    # if roll == memory and tiar == 3 do
+    #   if roll == 1 do
+    #     count += 1000
+    #   else
+    #     count += (roll*100)
+    #   end
+    #   memory = 0
+    #   tiar = 1
+    # end
+
+    # if roll == 1 and 
+
+    # memory = roll
+  end
+
+  puts points
+
+  points.each do |n|
+    total += n
+  end
+
+  puts "total = " + total.to_s
+
+  return total
 end
 
 class AboutScoringProject < Neo::Koan
