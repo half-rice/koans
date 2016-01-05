@@ -6,3 +6,4 @@ path_to_enlightenment.rb
 Rakefile
 README.rdoc
 versioning_spec.rb
+sandbox.rb
