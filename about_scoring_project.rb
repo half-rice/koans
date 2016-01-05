@@ -29,46 +29,43 @@ require File.expand_path(File.dirname(__FILE__) + '/neo')
 #
 # Your goal is to write the score method.
 
+def score_bonus(number)
+  # numbers 1 and 5 are special cases since the actual number itself
+  # is worth points. the bonus amount, though seemingly arbritrary, results
+  # in an 'attractive' number when totaling; 1000 and 500 respectively.
+  if number == 1
+    return 700
+  elsif number == 5
+    return 350
+  else
+    return number*100
+  end
+end
+
 def score(dice)
-  d = dice
-  points = Array.new(dice.count, 0)
-  bonus_avail = true
+  # nums[] index represents their respective real numbers
+  # populate array with the number of times a number has been rolled
+  nums = Array.new(10, 0)
+  dice.each_with_index do |r, i|  # |roll, index|
+    nums[r] += 1
+  end
+
+  # score the points from nums[]
+  points = 0
   bonus = 0
-  total = 0
-
-  d.each_with_index do |r, i|  # |roll, index|
-    t = 0 # total
-
-    if r == 1
-      t += 100
-    elsif r == 5
-      t += 50
-    end
-
-    if(bonus_avail and r == d[i+1] and r == d[i+2]) 
-      if(r == 1)
-        bonus = 700
-      elsif(r == 5)
-        bonus = 350
-      else
-        bonus = (r*100)
-      end
-      t += bonus
+  bonus_avail = true
+  nums.each_with_index do |n, i|
+    if bonus_avail and n >= 3
       bonus_avail = false
+      bonus = score_bonus(i)
     end
-
-    points[i] = t
+    if i == 1
+      points += n*100
+    elsif i == 5
+      points += n*50
+    end
   end
-
-  puts points
-
-  points.each do |n|
-    total += n
-  end
-
-  puts total
-  
-  return total
+  return points+bonus
 end
 
 class AboutScoringProject < Neo::Koan
