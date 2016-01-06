@@ -5,31 +5,41 @@ require File.expand_path(File.dirname(__FILE__) + '/neo')
 # class DiceSet
 #   code ...
 # end
+class DiceSet
+  attr_reader :values
 
-class AboutDiceProject < Neo::Koan
-  def test_can_create_a_dice_set
-    dice = DiceSet.new
-    assert_not_nil dice
-  end
-
-  def test_rolling_the_dice_returns_a_set_of_integers_between_1_and_6
-    dice = DiceSet.new
-
-    dice.roll(5)
-    assert dice.values.is_a?(Array), "should be an array"
-    assert_equal 5, dice.values.size
-    dice.values.each do |value|
-      assert value >= 1 && value <= 6, "value #{value} must be between 1 and 6"
+  def roll(no_of_rolls)
+    @values = []
+    no_of_rolls.times do
+      @values.push(rand(1..6))
     end
   end
+end
 
-  def test_dice_values_do_not_change_unless_explicitly_rolled
-    dice = DiceSet.new
-    dice.roll(5)
-    first_time = dice.values
-    second_time = dice.values
-    assert_equal first_time, second_time
-  end
+class AboutDiceProject < Neo::Koan
+  # def test_can_create_a_dice_set
+  #   dice = DiceSet.new
+  #   assert_not_nil dice
+  # end
+
+  # def test_rolling_the_dice_returns_a_set_of_integers_between_1_and_6
+  #   dice = DiceSet.new
+
+  #   dice.roll(5)
+  #   assert dice.values.is_a?(Array), "should be an array"
+  #   assert_equal 5, dice.values.size
+  #   dice.values.each do |value|
+  #     assert value >= 1 && value <= 6, "value #{value} must be between 1 and 6"
+  #   end
+  # end
+
+  # def test_dice_values_do_not_change_unless_explicitly_rolled
+  #   dice = DiceSet.new
+  #   dice.roll(5)
+  #   first_time = dice.values
+  #   second_time = dice.values
+  #   assert_equal first_time, second_time
+  # end
 
   def test_dice_values_should_change_between_rolls
     dice = DiceSet.new
@@ -40,6 +50,10 @@ class AboutDiceProject < Neo::Koan
     dice.roll(5)
     second_time = dice.values
 
+    puts first_time
+    puts "\n"
+    puts second_time 
+    puts "\n\n"
     assert_not_equal first_time, second_time,
       "Two rolls should not be equal"
 
